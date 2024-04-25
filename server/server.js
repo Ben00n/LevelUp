@@ -1,12 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const cors = require('cors');
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
+const mongoURL = 'mongodb+srv://benbehar321:asdasd123123A@cluster0.rimzvi5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost/myapp', {
+mongoose.connect(mongoURL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
