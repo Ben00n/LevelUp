@@ -1,25 +1,39 @@
-import React from 'react';
+// LoginForm.js
+import React, { useState } from 'react';
+import axios from 'axios';
 
-const LoginForm = ({ username, password, handleUsernameChange, handlePasswordChange, handleLogin }) => {
+const LoginForm = ({ onLogin }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('/api/login', { username, password });
+      onLogin(username);
+    } catch (error) {
+      setError('Login failed. Please check your credentials.');
+    }
+  };
+
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={handleUsernameChange}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-        <button type="submit">Login</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button type="submit">Login</button>
+      {error && <p className="error">{error}</p>}
+    </form>
   );
 };
 

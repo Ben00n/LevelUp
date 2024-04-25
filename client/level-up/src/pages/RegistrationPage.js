@@ -5,6 +5,7 @@ import '../styles/RegistrationPage.css';
 const RegistrationPage = () => {
   return (
     <div className="registration-page">
+      <h1>Registration</h1>
       <RegistrationForm />
     </div>
   );
