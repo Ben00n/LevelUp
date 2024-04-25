@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import LoginForm from '../components/LoginForm';
+import RegistrationForm from '../components/RegistrationForm';
 
 function App() {
   const [username, setUsername] = useState('');
@@ -32,39 +34,21 @@ function App() {
 
   return (
     <div>
-      <h1>Login</h1>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
-      </form>
+      <LoginForm
+        username={username}
+        password={password}
+        handleUsernameChange={(e) => setUsername(e.target.value)}
+        handlePasswordChange={(e) => setPassword(e.target.value)}
+        handleLogin={handleLogin}
+      />
 
-      <h1>Register</h1>
-      <form onSubmit={handleRegister}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Register</button>
-      </form>
+      <RegistrationForm
+        username={username}
+        password={password}
+        handleUsernameChange={(e) => setUsername(e.target.value)}
+        handlePasswordChange={(e) => setPassword(e.target.value)}
+        handleRegister={handleRegister}
+      />
 
       {message && <p>{message}</p>}
     </div>
