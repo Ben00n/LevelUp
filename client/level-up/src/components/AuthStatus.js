@@ -7,11 +7,15 @@ const AuthStatus = ({ isLoggedIn, username, onLogout }) => {
     <div className="auth-status">
       {isLoggedIn ? (
         <div>
-          <span>Logged in as {username}</span>
+          <span>You are logged in as {username}</span>
           <button onClick={onLogout}>Logout</button>
         </div>
       ) : (
-        <Link to="/login">Sign In</Link>
+        <div>
+          <span>You are not logged in</span>
+          <Link to="/login">Sign In</Link>
+          <Link to="/register">Register</Link>
+        </div>
       )}
     </div>
   );
