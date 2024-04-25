@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const LoginForm = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -12,8 +12,8 @@ const LoginForm = ({ onLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/login', { username, password });
-      onLogin(username);
+      const response = await axios.post('/api/login', { email, password });
+      onLogin(response.data.user.name, response.data.user.lastName);
       navigate('/');
     } catch (error) {
       setError('Login failed. Please check your credentials.');
@@ -23,10 +23,10 @@ const LoginForm = ({ onLogin }) => {
   return (
     <form onSubmit={handleSubmit}>
       <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
       <input
         type="password"

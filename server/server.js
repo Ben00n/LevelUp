@@ -14,59 +14,58 @@ mongoose.connect(mongoURL, {
   useUnifiedTopology: true,
 });
 
-// Define the User schema
 const userSchema = new mongoose.Schema({
-  username: String,
+  email: String,
   password: String,
+  name: String,
+  lastName: String,
 });
 
 // Create the User model
 const User = mongoose.model('User', userSchema);
 
-// Login route
 app.post('/api/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
   try {
-    // Find the user by username
-    const user = await User.findOne({ username });
+    // Find the user by email
+    const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(401).json({ error: 'Invalid username or password' });
+      return res.status(401).json({ error: 'Invalid email or password' });
     }
 
     // Compare the provided password with the hashed password
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(401).json({ error: 'Invalid username or password' });
+      return res.status(401).json({ error: 'Invalid email or password' });
     }
 
     // Authentication successful
-    res.json({ message: 'Login successful' });
+    res.json({ message: 'Login successful', user: { name: user.name, lastName: user.lastName } });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-// Registration route
 app.post('/api/register', async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password, name, lastName } = req.body;
 
   try {
-    // Check if the username already exists
-    const existingUser = await User.findOne({ username });
+    // Check if the email already exists
+    const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      return res.status(400).json({ error: 'Username already exists' });
+      return res.status(409).json({ error: 'Email already exists' });
     }
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user
-    const newUser = new User({ username, password: hashedPassword });
+    const newUser = new User({ email, password: hashedPassword, name, lastName });
     await newUser.save();
 
     res.json({ message: 'User registered successfully' });

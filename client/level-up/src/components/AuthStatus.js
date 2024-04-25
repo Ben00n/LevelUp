@@ -2,12 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/AuthStatus.css';
 
-const AuthStatus = ({ isLoggedIn, username, onLogout }) => {
+const AuthStatus = ({ isLoggedIn, name, lastName, onLogout }) => {
   return (
     <div className="auth-status">
       {isLoggedIn ? (
         <div>
-          <span>You are logged in as {username}</span>
+          <span>Logged in as {name} {lastName}</span>
           <button onClick={onLogout}>Logout</button>
         </div>
       ) : (

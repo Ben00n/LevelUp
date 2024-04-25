@@ -8,21 +8,24 @@ import AuthStatus from './components/AuthStatus';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
 
-  const handleLogin = (username) => {
+  const handleLogin = (name, lastName) => {
     setIsLoggedIn(true);
-    setUsername(username);
+    setName(name);
+    setLastName(lastName);
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    setUsername('');
+    setName('');
+    setLastName('');
   };
 
   return (
     <Router>
-      <AuthStatus isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout} />
+      <AuthStatus isLoggedIn={isLoggedIn} name={name} lastName={lastName} onLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
