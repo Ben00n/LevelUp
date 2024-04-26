@@ -14,7 +14,6 @@ const RegistrationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate username and password length
     if (email.length < 4) {
       setError('Entered an invalid email address.');
       return;
