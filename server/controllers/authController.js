@@ -17,7 +17,14 @@ exports.login = async (req, res) => {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    res.json({ message: 'Login successful', user: { name: user.name, lastName: user.lastName } });
+    res.json({
+      message: 'Login successful',
+      user: {
+        name: user.name,
+        lastName: user.lastName,
+        isAdmin: user.isAdmin,
+      },
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
@@ -36,7 +43,13 @@ exports.register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({ email, password: hashedPassword, name, lastName });
+    const newUser = new User({
+      email,
+      password: hashedPassword,
+      name,
+      lastName,
+      isAdmin: false,
+    });
     await newUser.save();
 
     res.json({ message: 'User registered successfully' });
@@ -44,4 +57,12 @@ exports.register = async (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
   }
+};
+
+exports.logout = (req, res) => {
+  // Perform any necessary logout logic, such as invalidating the session or token
+  // For example, if using JWT:
+  // req.logout();
+
+  res.json({ message: 'Logout successful' });
 };
