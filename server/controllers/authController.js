@@ -1,5 +1,8 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
+
+const secretKey = 'your-secret-key';
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
@@ -17,6 +20,8 @@ exports.login = async (req, res) => {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
+    const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
+    
     res.json({
       message: 'Login successful',
       user: {
@@ -24,6 +29,7 @@ exports.login = async (req, res) => {
         lastName: user.lastName,
         isAdmin: user.isAdmin,
       },
+      token
     });
   } catch (error) {
     console.error(error);
@@ -60,9 +66,37 @@ exports.register = async (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  // Perform any necessary logout logic, such as invalidating the session or token
-  // For example, if using JWT:
-  // req.logout();
-
   res.json({ message: 'Logout successful' });
+};
+
+exports.verifyToken = (req, res, next) => {
+  const token = req.headers.authorization;
+  if (!token) {
+    return res.status(401).json({ error: 'No token provided' });
+  }
+  const tokenValue = token.split(' ')[1];
+  jwt.verify(tokenValue, secretKey, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+    req.userId = decoded.userId;
+    next();
+  });
+};
+
+exports.getUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json({
+      name: user.name,
+      lastName: user.lastName,
+      isAdmin: user.isAdmin,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };

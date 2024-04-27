@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegistrationPage from './pages/RegistrationPage';
@@ -14,9 +15,17 @@ function App() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get('/api/user');
-        setIsLoggedIn(true);
-        setUser(response.data);
+        const token = Cookies.get('token');
+        if (token) {
+          const response = await axios.get('/api/user', {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setIsLoggedIn(true);
+          setUser(response.data);
+        } else {
+          setIsLoggedIn(false);
+          setUser(null);
+        }
       } catch (error) {
         setIsLoggedIn(false);
         setUser(null);
@@ -26,9 +35,10 @@ function App() {
     fetchUser();
   }, []);
 
-  const handleLogin = (user) => {
+  const handleLogin = (user, token) => {
     setIsLoggedIn(true);
     setUser(user);
+    Cookies.set('token', token, { expires: 1 });
   };
 
   const handleLogout = async () => {
@@ -36,6 +46,7 @@ function App() {
       await axios.post('/api/logout');
       setIsLoggedIn(false);
       setUser(null);
+      Cookies.remove('token');
       window.location.href = '/';
     } catch (error) {
       console.error(error);

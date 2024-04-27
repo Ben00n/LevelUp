@@ -12,13 +12,13 @@ const LoginForm = ({ onLogin }) => {
     e.preventDefault();
     try {
       const response = await axios.post('/api/login', { email, password });
-      onLogin(response.data.user);
+      onLogin(response.data.user, response.data.token);
       navigate('/');
     } catch (error) {
       setError('Login failed. Please check your credentials.');
     }
   };
-
+  
   return (
     <form onSubmit={handleSubmit}>
       <input
