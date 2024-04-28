@@ -6,7 +6,7 @@ import GenreForm from './GenreForm';
 import GenreList from './GenreList';
 import EpisodeForm from './EpisodeForm';
 import EpisodeList from './EpisodeList';
-import '../styles/AdminDashboard.css';
+import '../../styles/AdminDashboard.css';
 
 const AdminDashboard = () => {
   const [courses, setCourses] = useState([]);

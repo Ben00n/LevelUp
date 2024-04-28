@@ -26,18 +26,15 @@ const CoursePage = () => {
 
   return (
     <div className="course-page">
-      <section className="course-details">
-        <h1>{course.title}</h1>
-        <p>{course.description}</p>
-        <p>Instructor: {course.instructor}</p>
+      <section className="course-header">
+        <h1 className="course-title">{course.title}</h1>
+        <p className="course-instructor">Instructor: {course.instructor}</p>
       </section>
-      <section className="episodes">
-        <h2>Episodes</h2>
-        <ul>
-          {course.episodes.map((episode, index) => (
-            <li key={index}>{episode.title}</li>
-          ))}
-        </ul>
+      <section className="course-description">
+        <div className="description-container">
+          <h2>Description</h2>
+          <p>{course.description}</p>
+        </div>
       </section>
     </div>
   );

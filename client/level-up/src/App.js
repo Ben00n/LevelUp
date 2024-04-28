@@ -6,7 +6,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegistrationPage from './pages/RegistrationPage';
 import CoursePage from './pages/CoursePage';
-import AdminDashboard from './components/AdminDashboard';
+import AdminDashboard from './components/Admin/AdminDashboard';
 import AuthStatus from './components/AuthStatus';
 import Footer from './components/Footer';
 import './styles/App.css';
