@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 
-const secretKey = 'your-secret-key';
+const secretKey = 'BenoonIsAlmighty';
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
