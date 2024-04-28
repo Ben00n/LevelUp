@@ -24,6 +24,57 @@ exports.createCourse = async (req, res) => {
   }
 };
 
+
+exports.updateCourse = async (req, res) => {
+  try {
+    const { title, description, instructor, image, episodes, genre } = req.body;
+    const updatedCourse = await Course.findByIdAndUpdate(
+      req.params.id,
+      { title, description, instructor, image, genre },
+      { new: true }
+    );
+
+    if (!updatedCourse) {
+      return res.status(404).json({ error: 'Course not found' });
+    }
+
+    await Episode.deleteMany({ _id: { $in: updatedCourse.episodes } });
+    const updatedEpisodes = await Promise.all(
+      episodes.map(async (episode) => {
+        const newEpisode = new Episode({ title: episode.title });
+        await newEpisode.save();
+        return newEpisode._id;
+      })
+    );
+
+    updatedCourse.episodes = updatedEpisodes;
+    await updatedCourse.save();
+
+    res.json(updatedCourse);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+exports.deleteCourse = async (req, res) => {
+  try {
+    const deletedCourse = await Course.findByIdAndDelete(req.params.id);
+
+    if (!deletedCourse) {
+      return res.status(404).json({ error: 'Course not found' });
+    }
+
+    // Delete associated episodes
+    await Episode.deleteMany({ _id: { $in: deletedCourse.episodes } });
+
+    res.json({ message: 'Course deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 exports.getAllCourses = async (req, res) => {
   try {
     const courses = await Course.find();

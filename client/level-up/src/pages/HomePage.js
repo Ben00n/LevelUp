@@ -1,46 +1,46 @@
-// HomePage.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import CourseCard from '../components/CourseCard';
 import '../styles/HomePage.css';
 
 const HomePage = () => {
-  const [gameDevCourses, setGameDevCourses] = useState([]);
-  const [gameHackingCourses, setGameHackingCourses] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [genres, setGenres] = useState([]);
 
   useEffect(() => {
-    const fetchCourses = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get('/api/courses');
-        const courses = response.data;
-        setGameDevCourses(courses.filter((course) => course.genre === 'Game Development'));
-        setGameHackingCourses(courses.filter((course) => course.genre === 'Game Hacking'));
+        const [coursesResponse, genresResponse] = await Promise.all([
+          axios.get('/api/courses'),
+          axios.get('/api/genres'),
+        ]);
+
+        setCourses(coursesResponse.data);
+        setGenres(genresResponse.data);
       } catch (error) {
         console.error(error);
       }
     };
 
-    fetchCourses();
+    fetchData();
   }, []);
+
+  const getCoursesByGenre = (genreId) => {
+    return courses.filter((course) => course.genre === genreId);
+  };
 
   return (
     <div className="home-page">
-      <section>
-        <h2>Game Development</h2>
-        <div className="course-list">
-          {gameDevCourses.map((course) => (
-            <CourseCard key={course._id} course={course} />
-          ))}
-        </div>
-      </section>
-      <section>
-        <h2>Game Hacking</h2>
-        <div className="course-list">
-          {gameHackingCourses.map((course) => (
-            <CourseCard key={course._id} course={course} />
-          ))}
-        </div>
-      </section>
+      {genres.map((genre) => (
+        <section key={genre._id}>
+          <h2>{genre.name}</h2>
+          <div className="course-list">
+            {getCoursesByGenre(genre._id).map((course) => (
+              <CourseCard key={course._id} course={course} />
+            ))}
+          </div>
+        </section>
+      ))}
     </div>
   );
 };

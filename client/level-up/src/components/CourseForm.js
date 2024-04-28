@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const CourseForm = () => {
+const CourseForm = ({ onCourseAdded, genres }) => {
   const [genre, setGenre] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -12,11 +12,24 @@ const CourseForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/courses', { title, description, instructor, image, episodes, genre });
-      // Reset form fields and show success message
+      const response = await axios.post('/api/courses', {
+        title,
+        description,
+        instructor,
+        image,
+        episodes,
+        genre,
+      });
+      onCourseAdded(response.data);
+      // Reset form fields
+      setGenre('');
+      setTitle('');
+      setDescription('');
+      setInstructor('');
+      setImage('');
+      setEpisodes([{ title: '' }]);
     } catch (error) {
       console.error(error);
-      // Show error message
     }
   };
 
@@ -39,9 +52,12 @@ const CourseForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <select value={genre} onChange={(e) => setGenre(e.target.value)}>
-      <option value="">Select Genre</option>
-      <option value="Game Development">Game Development</option>
-      <option value="Game Hacking">Game Hacking</option>
+        <option value="">Select Genre</option>
+        {genres.map((genre) => (
+          <option key={genre._id} value={genre._id}>
+            {genre.name}
+          </option>
+        ))}
       </select>
       <input
         type="text"
