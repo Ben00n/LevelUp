@@ -1,28 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 
-const CourseList = () => {
-  const [courses, setCourses] = useState([]);
-
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const response = await axios.get('/api/courses');
-        setCourses(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchCourses();
-  }, []);
+const CourseList = ({ courses, onCourseRemoved }) => {
+  const handleRemoveCourse = async (courseId) => {
+    try {
+      await axios.delete(`/api/courses/${courseId}`);
+      onCourseRemoved(courseId);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div>
       <h3>Courses</h3>
       <ul>
         {courses.map((course) => (
-          <li key={course._id}>{course.title}</li>
+          <li key={course._id}>
+            <span>{course.title}</span>
+            <button onClick={() => handleRemoveCourse(course._id)}>Remove</button>
+          </li>
         ))}
       </ul>
     </div>

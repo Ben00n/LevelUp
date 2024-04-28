@@ -7,7 +7,6 @@ const CourseForm = ({ onCourseAdded, genres }) => {
   const [description, setDescription] = useState('');
   const [instructor, setInstructor] = useState('');
   const [image, setImage] = useState('');
-  const [episodes, setEpisodes] = useState([{ title: '' }]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,36 +16,17 @@ const CourseForm = ({ onCourseAdded, genres }) => {
         description,
         instructor,
         image,
-        episodes,
         genre,
       });
       onCourseAdded(response.data);
-      // Reset form fields
       setGenre('');
       setTitle('');
       setDescription('');
       setInstructor('');
       setImage('');
-      setEpisodes([{ title: '' }]);
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const handleEpisodeChange = (index, value) => {
-    const updatedEpisodes = [...episodes];
-    updatedEpisodes[index].title = value;
-    setEpisodes(updatedEpisodes);
-  };
-
-  const addEpisode = () => {
-    setEpisodes([...episodes, { title: '' }]);
-  };
-
-  const removeEpisode = (index) => {
-    const updatedEpisodes = [...episodes];
-    updatedEpisodes.splice(index, 1);
-    setEpisodes(updatedEpisodes);
   };
 
   return (
@@ -82,25 +62,6 @@ const CourseForm = ({ onCourseAdded, genres }) => {
         value={image}
         onChange={(e) => setImage(e.target.value)}
       />
-      <div>
-        <h4>Episodes</h4>
-        {episodes.map((episode, index) => (
-          <div key={index}>
-            <input
-              type="text"
-              placeholder={`Episode ${index + 1} Title`}
-              value={episode.title}
-              onChange={(e) => handleEpisodeChange(index, e.target.value)}
-            />
-            <button type="button" onClick={() => removeEpisode(index)}>
-              Remove
-            </button>
-          </div>
-        ))}
-        <button type="button" onClick={addEpisode}>
-          Add Episode
-        </button>
-      </div>
       <button type="submit">Create Course</button>
     </form>
   );

@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const episodeSchema = new mongoose.Schema({
   title: String,
-  // Add more fields as needed
+  description: String,
+  course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
 });
 
 const Episode = mongoose.model('Episode', episodeSchema);

@@ -1,20 +1,10 @@
 const Course = require('../models/courseModel');
-const Episode = require('../models/episodeModel');
 
 exports.createCourse = async (req, res) => {
   try {
-    const { title, description, instructor, image, episodes, genre } = req.body;
+    const { title, description, instructor, image, genre } = req.body;
     const newCourse = new Course({ title, description, instructor, image, genre });
 
-    const createdEpisodes = await Promise.all(
-      episodes.map(async (episode) => {
-        const newEpisode = new Episode({ title: episode.title });
-        await newEpisode.save();
-        return newEpisode._id;
-      })
-    );
-
-    newCourse.episodes = createdEpisodes;
     await newCourse.save();
 
     res.json({ message: 'Course created successfully' });
@@ -24,10 +14,9 @@ exports.createCourse = async (req, res) => {
   }
 };
 
-
 exports.updateCourse = async (req, res) => {
   try {
-    const { title, description, instructor, image, episodes, genre } = req.body;
+    const { title, description, instructor, image, genre } = req.body;
     const updatedCourse = await Course.findByIdAndUpdate(
       req.params.id,
       { title, description, instructor, image, genre },
@@ -37,18 +26,6 @@ exports.updateCourse = async (req, res) => {
     if (!updatedCourse) {
       return res.status(404).json({ error: 'Course not found' });
     }
-
-    await Episode.deleteMany({ _id: { $in: updatedCourse.episodes } });
-    const updatedEpisodes = await Promise.all(
-      episodes.map(async (episode) => {
-        const newEpisode = new Episode({ title: episode.title });
-        await newEpisode.save();
-        return newEpisode._id;
-      })
-    );
-
-    updatedCourse.episodes = updatedEpisodes;
-    await updatedCourse.save();
 
     res.json(updatedCourse);
   } catch (error) {
@@ -64,9 +41,6 @@ exports.deleteCourse = async (req, res) => {
     if (!deletedCourse) {
       return res.status(404).json({ error: 'Course not found' });
     }
-
-    // Delete associated episodes
-    await Episode.deleteMany({ _id: { $in: deletedCourse.episodes } });
 
     res.json({ message: 'Course deleted successfully' });
   } catch (error) {
@@ -87,7 +61,7 @@ exports.getAllCourses = async (req, res) => {
 
 exports.getCourseById = async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id).populate('episodes');
+    const course = await Course.findById(req.params.id);
     if (!course) {
       return res.status(404).json({ error: 'Course not found' });
     }
