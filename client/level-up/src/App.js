@@ -5,8 +5,12 @@ import Cookies from 'js-cookie';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegistrationPage from './pages/RegistrationPage';
+import CoursePage from './pages/CoursePage';
 import AdminDashboard from './components/AdminDashboard';
 import AuthStatus from './components/AuthStatus';
+import Footer from './components/Footer';
+import './styles/App.css';
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -55,24 +59,29 @@ function App() {
 
   return (
     <Router>
-      <AuthStatus isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
-        <Route path="/register" element={<RegistrationPage />} />
-        <Route
-          path="/admin"
-          element={
-            isLoggedIn && user && user.isAdmin ? (
-              <AdminDashboard />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-      </Routes>
+      <div className="app-wrapper">
+        <div className="app-content">
+          <AuthStatus isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+            <Route path="/register" element={<RegistrationPage />} />
+            <Route
+              path="/admin"
+              element={
+                isLoggedIn && user && user.isAdmin ? (
+                  <AdminDashboard />
+                ) : (
+                  <Navigate to="/" />
+                )
+              }
+            />
+            <Route path="/courses/:id" element={<CoursePage />} />
+          </Routes>
+        </div>
+        <Footer />
+      </div>
     </Router>
   );
 }
-
 export default App;

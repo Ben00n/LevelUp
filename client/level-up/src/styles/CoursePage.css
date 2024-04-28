@@ -1,0 +1,26 @@
+.course-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .course-details {
+    margin-bottom: 40px;
+  }
+  
+  .course-details h1 {
+    margin-top: 0;
+  }
+  
+  .episodes {
+    margin-bottom: 40px;
+  }
+  
+  .episodes ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .episodes li {
+    margin-bottom: 10px;
+  }

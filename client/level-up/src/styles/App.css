@@ -1,0 +1,8 @@
+.app-wrapper {
+    min-height: 100vh;
+    position: relative;
+  }
+  
+  .app-content {
+    padding-bottom: 100px;
+  }

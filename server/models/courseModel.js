@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
 
 const courseSchema = new mongoose.Schema({
+  genre: String,
   title: String,
   description: String,
   instructor: String,
-  // Add more fields as needed
+  image: String,
+  episodes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Episode' }],
 });
 
 const Course = mongoose.model('Course', courseSchema);
