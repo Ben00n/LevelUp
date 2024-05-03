@@ -6,7 +6,6 @@ const courseSchema = new mongoose.Schema({
   description: String,
   instructor: String,
   image: String,
-  episodes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Episode' }],
 });
 
 const Course = mongoose.model('Course', courseSchema);
