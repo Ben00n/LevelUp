@@ -15,11 +15,7 @@ const LoginForm = ({ onLogin }) => {
       onLogin(response.data.user, response.data.token);
       navigate('/');
     } catch (error) {
-      if (error.response && error.response.status === 409) {
-        setError('User already logged in from another place.');
-      } else {
-        setError('Login failed. Please check your credentials.');
-      }
+      setError('Login failed. Please check your credentials.');
     }
   };
   

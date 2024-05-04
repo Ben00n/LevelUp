@@ -47,10 +47,7 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      const token = Cookies.get('token');
-      await axios.post('/api/logout', null, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.post('/api/logout');
       setIsLoggedIn(false);
       setUser(null);
       Cookies.remove('token');
