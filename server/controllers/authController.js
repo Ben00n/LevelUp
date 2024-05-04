@@ -2,8 +2,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 
-const secretKey = 'BenoonIsAlmighty';
-
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -20,7 +18,7 @@ exports.login = async (req, res) => {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     
     res.json({
       message: 'Login successful',
@@ -75,7 +73,7 @@ exports.verifyToken = (req, res, next) => {
     return res.status(401).json({ error: 'No token provided' });
   }
   const tokenValue = token.split(' ')[1];
-  jwt.verify(tokenValue, secretKey, (err, decoded) => {
+  jwt.verify(tokenValue, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
       return res.status(401).json({ error: 'Invalid token' });
     }

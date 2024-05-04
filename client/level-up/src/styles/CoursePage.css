@@ -40,3 +40,34 @@
 .description-container p {
   color: #fff;
 }
+
+.course-episodes {
+  margin-bottom: 40px;
+}
+
+.episodes-container {
+  background-color: #1e1f22;
+  padding: 20px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.episodes-container h2 {
+  font-size: 24px;
+  margin-top: 2px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.episodes-container button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #3c4044;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}

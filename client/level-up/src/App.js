@@ -76,7 +76,10 @@ function App() {
                 )
               }
             />
-            <Route path="/courses/:id" element={<CoursePage />} />
+            <Route
+              path="/courses/:id"
+              element={<CoursePage isLoggedIn={isLoggedIn} />}
+            />
           </Routes>
         </div>
         <Footer />

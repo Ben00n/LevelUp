@@ -6,6 +6,8 @@ const courseRoutes = require('./routes/courseRoutes');
 const genreRoutes = require('./routes/genreRoutes');
 const episodeRoutes = require('./routes/episodeRoutes');
 
+require('dotenv').config();
+
 const app = express();
 app.use(express.json());
 app.use(cors());
