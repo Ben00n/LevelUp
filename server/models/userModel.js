@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
   name: String,
   lastName: String,
   isAdmin: { type: Boolean, default: false },
+  currentSessionToken: String,
 });
 
 const User = mongoose.model('User', userSchema);

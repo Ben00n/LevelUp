@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import HomePage from './pages/HomePage';
@@ -11,10 +11,10 @@ import AuthStatus from './components/AuthStatus';
 import Footer from './components/Footer';
 import './styles/App.css';
 
-
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -31,13 +31,16 @@ function App() {
           setUser(null);
         }
       } catch (error) {
-        setIsLoggedIn(false);
-        setUser(null);
+        if (error.response && error.response.status === 401) {
+          handleLogout();
+        } else {
+          console.error(error);
+        }
       }
     };
 
     fetchUser();
-  }, []);
+  }, [location]);
 
   const handleLogin = (user, token) => {
     setIsLoggedIn(true);
@@ -58,33 +61,40 @@ function App() {
   };
 
   return (
-    <Router>
-      <div className="app-wrapper">
-        <div className="app-content">
-          <AuthStatus isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
-            <Route path="/register" element={<RegistrationPage />} />
-            <Route
-              path="/admin"
-              element={
-                isLoggedIn && user && user.isAdmin ? (
-                  <AdminDashboard />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
-            <Route
-              path="/courses/:id"
-              element={<CoursePage isLoggedIn={isLoggedIn} />}
-            />
-          </Routes>
-        </div>
-        <Footer />
+    <div className="app-wrapper">
+      <div className="app-content">
+        <AuthStatus isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+          <Route path="/register" element={<RegistrationPage />} />
+          <Route
+            path="/admin"
+            element={
+              isLoggedIn && user && user.isAdmin ? (
+                <AdminDashboard />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/courses/:id"
+            element={<CoursePage isLoggedIn={isLoggedIn} />}
+          />
+        </Routes>
       </div>
-    </Router>
+      <Footer />
+    </div>
   );
 }
-export default App;
+
+function AppWrapper() {
+  return (
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  );
+}
+
+export default AppWrapper;

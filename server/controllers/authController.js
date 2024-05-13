@@ -19,6 +19,8 @@ exports.login = async (req, res) => {
     }
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    user.currentSessionToken = token;
+    await user.save();
     
     res.json({
       message: 'Login successful',
@@ -67,19 +69,26 @@ exports.logout = (req, res) => {
   res.json({ message: 'Logout successful' });
 };
 
-exports.verifyToken = (req, res, next) => {
+exports.verifyToken = async (req, res, next) => {
   const token = req.headers.authorization;
   if (!token) {
     return res.status(401).json({ error: 'No token provided' });
   }
   const tokenValue = token.split(' ')[1];
-  jwt.verify(tokenValue, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
+
+  try {
+    const decoded = jwt.verify(tokenValue, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.userId);
+
+    if (!user || user.currentSessionToken !== tokenValue) {
       return res.status(401).json({ error: 'Invalid token' });
     }
+
     req.userId = decoded.userId;
     next();
-  });
+  } catch (err) {
+    return res.status(401).json({ error: 'Invalid token' });
+  }
 };
 
 exports.getUser = async (req, res) => {
