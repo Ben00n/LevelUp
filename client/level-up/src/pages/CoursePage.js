@@ -58,14 +58,13 @@ const CoursePage = ({ isLoggedIn }) => {
       </section>
       <section className="course-episodes">
         <div className="episodes-container">
-          <h2>Subjects</h2>
+          <h2>Episodes</h2>
           {episodes.map((episode) => (
-            <button
-              key={episode._id}
-              onClick={() => handleEpisodeClick(episode._id)}
-            >
-              {episode.title}
-            </button>
+            <div key={episode._id}>
+              <button onClick={() => handleEpisodeClick(episode._id)}>
+                {episode.title}
+              </button>
+            </div>
           ))}
         </div>
       </section>

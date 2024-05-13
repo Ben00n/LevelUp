@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegistrationPage from './pages/RegistrationPage';
 import CoursePage from './pages/CoursePage';
+import EpisodePage from './pages/EpisodePage';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import AuthStatus from './components/AuthStatus';
 import Footer from './components/Footer';
@@ -81,6 +82,10 @@ function App() {
           <Route
             path="/courses/:id"
             element={<CoursePage isLoggedIn={isLoggedIn} />}
+          />
+          <Route
+          path="/episodes/:id"
+          element={<EpisodePage />}
           />
         </Routes>
       </div>

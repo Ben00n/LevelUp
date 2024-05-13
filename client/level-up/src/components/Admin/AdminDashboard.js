@@ -4,7 +4,7 @@ import CourseForm from './CourseForm';
 import CourseList from './CourseList';
 import GenreForm from './GenreForm';
 import GenreList from './GenreList';
-import EpisodeForm from './EpisodeForm';
+import EpisodeForm from '../EpisodeForm';
 import EpisodeList from './EpisodeList';
 import '../../styles/AdminDashboard.css';
 
