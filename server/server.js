@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
-const fileUpload = require('express-fileupload');
 const authRoutes = require('./routes/authRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const genreRoutes = require('./routes/genreRoutes');
@@ -13,9 +12,6 @@ require('dotenv').config();
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use(fileUpload());
-
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api', authRoutes);
 app.use('/api/genres', genreRoutes);

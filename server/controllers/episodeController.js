@@ -1,24 +1,29 @@
 const Episode = require('../models/episodeModel');
-const path = require('path');
+const axios = require('axios');
+const FormData = require('form-data');
 
 exports.createEpisode = async (req, res) => {
   try {
     const { title, description, courseId } = req.body;
-    
-    let videoUrl = '';
-    if (req.files && req.files.video) {
-      const videoFile = req.files.video;
-      const videoFileName = `${Date.now()}_${videoFile.name}`;
-      const videoPath = path.join(__dirname, '..', 'uploads', videoFileName);
-      await videoFile.mv(videoPath);
-      videoUrl = `/uploads/${videoFileName}`;
-    }
+
+    const videoFile = req.files.video;
+    const formData = new FormData();
+    formData.append('file', videoFile.data, videoFile.name);
+
+    const uploadResponse = await axios.post('https://api.vimeo.com/me/videos', formData, {
+      headers: {
+        'Authorization': `Bearer ${process.env.VIMEO_ACCESS_TOKEN}`,
+        ...formData.getHeaders(),
+      },
+    });
+
+    const vimeoVideoId = uploadResponse.data.uri.split('/').pop();
 
     const newEpisode = new Episode({
       title,
       description,
       course: courseId,
-      videoUrl,
+      vimeoId: vimeoVideoId,
     });
 
     await newEpisode.save();

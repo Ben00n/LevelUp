@@ -15,7 +15,7 @@ const EpisodeForm = ({ onEpisodeAdded, courses }) => {
       formData.append('description', description);
       formData.append('courseId', courseId);
       formData.append('video', videoFile);
-    
+  
       const response = await axios.post('/api/episodes', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });

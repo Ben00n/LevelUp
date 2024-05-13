@@ -22,7 +22,7 @@ const EpisodePage = () => {
   }, [id]);
 
   const handleBackClick = () => {
-    navigate(-1); // Go back to the previous page
+    navigate(-1);
   };
 
   if (!episode) {
@@ -41,11 +41,16 @@ const EpisodePage = () => {
       </div>
       <div className="episode-video">
         <div className="video-container">
-          <h2>Video</h2>
           <div className="video-player">
-            <video controls>
-              <source src={episode.videoUrl} type="video/mp4" />
-            </video>
+          <iframe
+              src={`https://player.vimeo.com/video/${episode.vimeoId}`}
+              title={`Episode: ${episode.title}`}
+              width="100%"
+              height="100%"
+              frameBorder="0"
+              allow="autoplay; fullscreen"
+              allowFullScreen
+            ></iframe>
           </div>
         </div>
       </div>
