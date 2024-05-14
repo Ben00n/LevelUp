@@ -8,5 +8,6 @@ router.get('/', episodeController.getAllEpisodes);
 router.get('/:id', episodeController.getEpisodeById);
 router.delete('/:id', episodeController.deleteEpisode);
 router.get('/course/:courseId', episodeController.getEpisodesByCourseId);
+router.put('/:id', episodeController.updateEpisode);
 
 module.exports = router;

@@ -36,3 +36,23 @@ exports.deleteGenre = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+exports.updateGenre = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const updatedGenre = await Genre.findByIdAndUpdate(
+      req.params.id,
+      { name },
+      { new: true }
+    );
+
+    if (!updatedGenre) {
+      return res.status(404).json({ error: 'Genre not found' });
+    }
+
+    res.json(updatedGenre);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};

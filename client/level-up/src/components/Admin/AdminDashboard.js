@@ -44,22 +44,30 @@ const AdminDashboard = () => {
         return (
           <>
             <GenreForm onGenreAdded={fetchData} />
-            <GenreList genres={genres} onGenreRemoved={fetchData} />
+            <GenreList genres={genres} onGenreRemoved={fetchData} onGenreUpdated={fetchData} />
           </>
         );
       case 'courses':
         return (
           <>
             <CourseForm onCourseAdded={fetchData} genres={genres} />
-            <CourseList courses={courses} onCourseRemoved={fetchData} />
-          </>
+            <CourseList
+             courses={courses}
+             onCourseRemoved={fetchData}
+             onCourseUpdated={fetchData}
+             genres={genres}
+/>          </>
         );
       case 'episodes':
         return (
           <>
             <EpisodeForm onEpisodeAdded={fetchData} courses={courses} />
-            <EpisodeList episodes={episodes} onEpisodeRemoved={fetchData} />
-          </>
+            <EpisodeList
+              episodes={episodes}
+              onEpisodeRemoved={fetchData}
+              onEpisodeUpdated={fetchData}
+              courses={courses}
+/>          </>
         );
       default:
         return null;

@@ -48,10 +48,9 @@
 .admin-content input,
 .admin-content textarea,
 .admin-content select {
-  width: calc(100% - 20px);
+  width: 98%;
   padding: 10px;
   margin-bottom: 10px;
-  margin-right: 20px;
   background-color: #1E1F22;
   color: #fff;
   border: none;
@@ -97,6 +96,74 @@
   border-radius: 4px;
 }
 
-.admin-content li button {
+.admin-content li .actions {
+  display: flex;
+  align-items: center;
+}
+
+.admin-content li .actions button {
   margin-left: 10px;
+  padding: 8px 16px;
+  min-width: 80px;
+  text-align: center;
+  background-color: #7289DA;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.admin-content li .actions button:hover {
+  background-color: #677BC4;
+}
+
+.admin-content li.editing {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.admin-content li.editing input[type="text"],
+.admin-content li.editing textarea,
+.admin-content li.editing select {
+  width: calc(100% - 20px);
+  padding: 8px;
+  margin-bottom: 10px;
+  background-color: #1E1F22;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}
+
+.admin-content li.editing .actions {
+  justify-content: flex-end;
+}
+
+.admin-content li.editing .actions button {
+  margin-left: 10px;
+  padding: 8px 16px;
+  background-color: #7289DA;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.admin-content li.editing .actions button:hover {
+  background-color: #677BC4;
+}
+
+.admin-content li.editing {
+  background-color: #4E5D94;
+}
+
+.admin-content li.editing input[type="text"] {
+  flex: 1;
+  padding: 8px;
+  margin-right: 10px;
+  background-color: #1E1F22;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
 }

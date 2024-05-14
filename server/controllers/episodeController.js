@@ -82,3 +82,23 @@ exports.getEpisodesByCourseId = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+exports.updateEpisode = async (req, res) => {
+  try {
+    const { title, description, courseId } = req.body;
+    const updatedEpisode = await Episode.findByIdAndUpdate(
+      req.params.id,
+      { title, description, course: courseId },
+      { new: true }
+    ).populate('course', 'title');
+
+    if (!updatedEpisode) {
+      return res.status(404).json({ error: 'Episode not found' });
+    }
+
+    res.json(updatedEpisode);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
