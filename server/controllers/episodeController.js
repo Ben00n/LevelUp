@@ -10,20 +10,20 @@ exports.createEpisode = async (req, res) => {
     const formData = new FormData();
     formData.append('file', videoFile.data, videoFile.name);
 
-    const uploadResponse = await axios.post('https://api.vimeo.com/me/videos', formData, {
+    const uploadResponse = await axios.post('https://api.sproutvideo.com/v1/videos', formData, {
       headers: {
-        'Authorization': `Bearer ${process.env.VIMEO_ACCESS_TOKEN}`,
+        'SproutVideo-Api-Key': process.env.SPROUTVIDEO_API_KEY,
         ...formData.getHeaders(),
       },
     });
 
-    const vimeoVideoId = uploadResponse.data.uri.split('/').pop();
+    const sproutVideoId = uploadResponse.data.id;
 
     const newEpisode = new Episode({
       title,
       description,
       course: courseId,
-      vimeoId: vimeoVideoId,
+      sproutVideoId: sproutVideoId,
     });
 
     await newEpisode.save();

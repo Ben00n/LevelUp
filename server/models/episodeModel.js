@@ -4,7 +4,7 @@ const episodeSchema = new mongoose.Schema({
   title: String,
   description: String,
   course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
-  vimeoId: String,
+  sproutVideoId: String,
 });
 
 const Episode = mongoose.model('Episode', episodeSchema);

@@ -43,14 +43,13 @@ const EpisodePage = () => {
         <div className="video-container">
           <div className="video-player">
           <iframe
-              src={`https://player.vimeo.com/video/${episode.vimeoId}`}
-              title={`Episode: ${episode.title}`}
-              width="100%"
-              height="100%"
-              frameBorder="0"
-              allow="autoplay; fullscreen"
-              allowFullScreen
-            ></iframe>
+            src={`https://videos.sproutvideo.com/embed/${episode.sproutVideoId}`}
+            title={`Episode: ${episode.title}`}
+            width="100%"
+            height="100%"
+            frameBorder="0"
+            allowFullScreen
+          ></iframe>
           </div>
         </div>
       </div>
