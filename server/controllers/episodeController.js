@@ -17,13 +17,16 @@ exports.createEpisode = async (req, res) => {
       },
     });
 
-    const sproutVideoId = uploadResponse.data.id;
+    const sproutVideoEmbedCode = uploadResponse.data.embed_code;
+
+    const embedCodeMatch = sproutVideoEmbedCode.match(/embed\/([^/]+)\/([^'"]+)/);
+    const embedPath = embedCodeMatch ? embedCodeMatch[0] : '';
 
     const newEpisode = new Episode({
       title,
       description,
       course: courseId,
-      sproutVideoId: sproutVideoId,
+      sproutVideoEmbedPath: embedPath,
     });
 
     await newEpisode.save();
@@ -59,16 +62,32 @@ exports.getAllEpisodes = async (req, res) => {
 
 exports.deleteEpisode = async (req, res) => {
   try {
-    const deletedEpisode = await Episode.findByIdAndDelete(req.params.id);
+    const episode = await Episode.findById(req.params.id);
 
-    if (!deletedEpisode) {
+    if (!episode) {
       return res.status(404).json({ error: 'Episode not found' });
     }
-    
+
+    const videoId = episode.sproutVideoEmbedPath.split('/')[1];
+
+    await axios.delete(`https://api.sproutvideo.com/v1/videos/${videoId}`, {
+      headers: {
+        'SproutVideo-Api-Key': process.env.SPROUTVIDEO_API_KEY,
+      },
+    });
+
+    await Episode.findByIdAndDelete(req.params.id);
+
     res.json({ message: 'Episode deleted successfully' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    if (error.response && error.response.data && error.response.data.error === 'Video Not Found') {
+      // If the video is not found on Sprout Video, delete the episode from the database
+      await Episode.findByIdAndDelete(req.params.id);
+      res.json({ message: 'Episode deleted successfully from the database' });
+    } else {
+      res.status(500).json({ error: 'Internal server error' });
+    }
   }
 };
 

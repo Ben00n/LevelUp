@@ -42,14 +42,15 @@ const EpisodePage = () => {
       <div className="episode-video">
         <div className="video-container">
           <div className="video-player">
-          <iframe
-            src={`https://videos.sproutvideo.com/embed/${episode.sproutVideoId}`}
-            title={`Episode: ${episode.title}`}
-            width="100%"
-            height="100%"
-            frameBorder="0"
-            allowFullScreen
-          ></iframe>
+            <iframe
+              src={`https://videos.sproutvideo.com/${episode.sproutVideoEmbedPath}`}
+              width="100%"
+              height="100%"
+              frameBorder="0"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+              title={`Episode: ${episode.title}`}
+            ></iframe>
           </div>
         </div>
       </div>
